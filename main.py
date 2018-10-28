@@ -1,4 +1,4 @@
-ZERO_TO_TWENTY = {
+_ZERO_TO_TWENTY = {
     0: "zero",
     1: "unu",
     2: "doi",
@@ -21,7 +21,7 @@ ZERO_TO_TWENTY = {
     19: "nouăsprezece",
 }
 
-TENS = {
+_TENS = {
     1: "zece",
     2: "douăzeci",
     3: "treizeci",
@@ -33,80 +33,59 @@ TENS = {
     9: "nouăzeci",
 }
 
-HUNDREDS = {
-    1: "o sută",
-    2: "două sute",
-    3: "trei sute",
-    4: "patru sute",
-    5: "cinci sute",
-    6: "şase sute",
-    7: "şapte sute",
-    8: "opt sute",
-    9: "nouă sute",
-}
+_ORDERS = [
+    (0, "unu", "doi", ""),
+    (100, "o sută", "două sute", "sute"),
+    (1_000, "o mie", "două mii", "mii"),
+    (1_000_000, "un milion", "două milioane", "milioane"),
+    (1_000_000_000, "un miliard", "două miliarde", "miliarde"),
+    (1_000_000_000_000, "un trilion", "două trilioane", "trilioane")
+]
 
-THOUSANDS = {
-    1: "o mie",
-    2: "două mii",
-    3: "trei mii",
-    4: "patru mii",
-    5: "cinci mii",
-    6: "şase mii",
-    7: "şapte mii",
-    8: "opt mii",
-    9: "nouă mii",
-}
+ORDERS_ONES = _ORDERS[0]
+ORDERS_HUNDREDS = _ORDERS[1]
+ORDERS_THOUSANDS = _ORDERS[2]
+ORDERS_MILLIONS = _ORDERS[3]
+ORDERS_BILLIONS = _ORDERS[4]
+ORDERS_TRILLIONS = _ORDERS[5]
 
-TEN_TO_TWENTY_THOUSANDS = {
-    11: "unsprezece mii",
-    12: "douăsprezece mii",
-    13: "treisprezece mii",
-    14: "patrusprezece mii",
-    15: "cincisprezece mii",
-    16: "şasesprezece mii",
-    17: "şaptesprezece mii",
-    18: "optsprezece mii",
-    19: "nouăsprezece mii",
-}
 
-MILLIONS = {
-    1: "un milion",
-    2: "două milioane",
-    3: "trei milioane",
-    4: "patru milioane",
-    5: "cinci milioane",
-    6: "şase milioane",
-    7: "şapte milioane",
-    8: "opt milioane",
-    9: "nouă milioane",
-}
+def get_order(number: int) -> (int, int, int):
+    for (index, order) in enumerate(_ORDERS[:-1]):
+        peek = _ORDERS[index + 1]
+        if order[0] <= number < peek[0]:
+            return order
+    return _ORDERS[-1]
 
 
 def number_to_text(number: int) -> str:
     if number < 20:
-        return ZERO_TO_TWENTY[number]
+        return _ZERO_TO_TWENTY[number]
     elif number < 100:
         tens, ones = divmod(number, 10)
         if ones != 0:
-            return TENS[tens] + " şi " + ZERO_TO_TWENTY[ones]
+            return _TENS[tens] + " şi " + _ZERO_TO_TWENTY[ones]
         else:
-            return TENS[tens]
-    elif number < 1_000:
-        hundreds, rest = divmod(number, 100)
+            return _TENS[tens]
+    elif number < 100_000:
+        order = get_order(number)
+        head, rest = divmod(number, order[0])
+
+        if head == 1:
+            head = order[1]
+        elif head == 2:
+            head = order[2]
+        else:
+            head = _ZERO_TO_TWENTY[head] + " " + order[3]
+
         if rest != 0:
-            return HUNDREDS[hundreds] + " " + number_to_text(rest)
+            return head + " " + number_to_text(rest)
         else:
-            return HUNDREDS[hundreds]
-    elif number < 10_000:
-        thousands, rest = divmod(number, 1_000)
-        if rest != 0:
-            return THOUSANDS[thousands] + " " + number_to_text(rest)
-        else:
-            return THOUSANDS[thousands]
+            return head
     elif number < 1_000_000:
-        thousands, rest = divmod(number, 1_000)
+        head, rest = divmod(number, 1_000)
         if rest != 0:
-            return number_to_text(thousands) + " mii " + number_to_text(rest)
+            return number_to_text(head) + " mii " + number_to_text(rest)
         else:
-            return number_to_text(thousands) + " mii"
+            return number_to_text(head) + " mii"
     return str(number)

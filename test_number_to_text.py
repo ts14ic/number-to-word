@@ -180,6 +180,34 @@ class NumberToTextTest(TestCase):
     #         9_000_000: "nouă milioane",
     #     })
 
+    def test_orders(self):
+        self.assertEqual(main.ORDERS_ONES, main.get_order(0))
+        self.assertEqual(main.ORDERS_ONES, main.get_order(3))
+        self.assertEqual(main.ORDERS_ONES, main.get_order(10))
+        self.assertEqual(main.ORDERS_ONES, main.get_order(13))
+        self.assertEqual(main.ORDERS_ONES, main.get_order(40))
+        self.assertEqual(main.ORDERS_ONES, main.get_order(99))
+
+        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(100))
+        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(103))
+        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(514))
+        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(999))
+
+        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(1000))
+        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(1030))
+        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(5140))
+        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(9999))
+
+        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(1_000_000))
+        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(1_030_000))
+        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(5_140_000))
+        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(9_999_000))
+
+        self.assertEqual(
+            main.ORDERS_TRILLIONS,
+            main.get_order(13_592_510_000_002)
+        )
+
     def assert_translations(self, assertions):
         for (digit, string) in assertions.items():
             self.assertEqual(string, main.number_to_text(digit))
