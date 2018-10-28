@@ -50,7 +50,7 @@ ORDERS_BILLIONS = _ORDERS[4]
 ORDERS_TRILLIONS = _ORDERS[5]
 
 
-def get_order(number: int) -> (int, int, int):
+def get_order(number: int) -> (int, str, str, str):
     for (index, order) in enumerate(_ORDERS[:-1]):
         peek = _ORDERS[index + 1]
         if order[0] <= number < peek[0]:
