@@ -170,7 +170,7 @@ class NumberToTextTest(TestCase):
     def test_trillions(self):
         self.assert_translations({
             123_612_120_951_100: "o sută douăzeci şi trei trilioane şase sute douăsprezece miliarde o sută douăzeci "
-                                 "milioane nouă sute cincizeci şi unu mii o sută "
+                                 "milioane nouă sute cincizeci şi unu mii o sută"
         })
 
     def assert_translations(self, assertions):
