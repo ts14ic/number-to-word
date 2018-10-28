@@ -167,18 +167,15 @@ class NumberToTextTest(TestCase):
             119_996: "o sută nouăsprezece mii nouă sute nouăzeci şi şase",
         })
 
-    # def test_millions(self):
-    #     self.assert_translations({
-    #         1_000_000: "un milion",
-    #         2_000_000: "două milioane",
-    #         3_000_000: "trei milioane",
-    #         4_000_000: "patru milioane",
-    #         5_000_000: "cinci milioane",
-    #         6_000_000: "şase milioane",
-    #         7_000_000: "şapte milioane",
-    #         8_000_000: "opt milioane",
-    #         9_000_000: "nouă milioane",
-    #     })
+    def test_trillions(self):
+        self.assert_translations({
+            123_612_120_951_100: "o sută douăzeci şi trei trilioane şase sute douăsprezece miliarde o sută douăzeci "
+                                 "milioane nouă sute cincizeci şi unu mii o sută "
+        })
+
+    def assert_translations(self, assertions):
+        for (digit, string) in assertions.items():
+            self.assertEqual(string, main.number_to_text(digit))
 
     def test_orders(self):
         self.assertEqual(main.ORDERS_ONES, main.get_order(0))
@@ -207,7 +204,3 @@ class NumberToTextTest(TestCase):
             main.ORDERS_TRILLIONS,
             main.get_order(13_592_510_000_002)
         )
-
-    def assert_translations(self, assertions):
-        for (digit, string) in assertions.items():
-            self.assertEqual(string, main.number_to_text(digit))
