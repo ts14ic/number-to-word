@@ -67,7 +67,7 @@ def number_to_text(number: int) -> str:
             return _TENS[tens] + " şi " + _ZERO_TO_TWENTY[ones]
         else:
             return _TENS[tens]
-    elif number < 100_000:
+    else:
         order = get_order(number)
         head, rest = divmod(number, order[0])
 
@@ -76,16 +76,9 @@ def number_to_text(number: int) -> str:
         elif head == 2:
             head = order[2]
         else:
-            head = _ZERO_TO_TWENTY[head] + " " + order[3]
+            head = number_to_text(head) + " " + order[3]
 
         if rest != 0:
             return head + " " + number_to_text(rest)
         else:
             return head
-    elif number < 1_000_000:
-        head, rest = divmod(number, 1_000)
-        if rest != 0:
-            return number_to_text(head) + " mii " + number_to_text(rest)
-        else:
-            return number_to_text(head) + " mii"
-    return str(number)
