@@ -51,10 +51,10 @@ ORDERS_TRILLIONS = _ORDERS[5]
 
 
 def get_order(number: int) -> (int, str, str, str):
-    for (index, order) in enumerate(_ORDERS[:-1]):
-        peek = _ORDERS[index + 1]
-        if order[0] <= number < peek[0]:
-            return order
+    for index, current in enumerate(_ORDERS[:-1]):
+        next = _ORDERS[index + 1]
+        if current[0] <= number < next[0]:
+            return current
     return _ORDERS[-1]
 
 
