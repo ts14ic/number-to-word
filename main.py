@@ -22,7 +22,7 @@ _ZERO_TO_TWENTY = {
 }
 
 _TENS = {
-    1: "zece",
+    # 1: "zece", // already included in _ZERO_TO_TWENTY
     2: "douăzeci",
     3: "treizeci",
     4: "patruzeci",

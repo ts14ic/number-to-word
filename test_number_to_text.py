@@ -178,29 +178,12 @@ class NumberToTextTest(TestCase):
             self.assertEqual(string, main.number_to_text(digit))
 
     def test_orders(self):
-        self.assertEqual(main.ORDERS_ONES, main.get_order(0))
-        self.assertEqual(main.ORDERS_ONES, main.get_order(3))
-        self.assertEqual(main.ORDERS_ONES, main.get_order(10))
-        self.assertEqual(main.ORDERS_ONES, main.get_order(13))
-        self.assertEqual(main.ORDERS_ONES, main.get_order(40))
-        self.assertEqual(main.ORDERS_ONES, main.get_order(99))
+        self.assertOrderForNumbers(main.ORDERS_ONES, [0, 3, 10, 13, 40, 99])
+        self.assertOrderForNumbers(main.ORDERS_HUNDREDS, [100, 103, 514, 999])
+        self.assertOrderForNumbers(main.ORDERS_THOUSANDS, [1_000, 1_030, 5_140, 999_999])
+        self.assertOrderForNumbers(main.ORDERS_MILLIONS, [1_000_000, 1_030_000, 5_140_000, 9_999_999])
+        self.assertOrderForNumbers(main.ORDERS_TRILLIONS, [13_592_510_000_002])
 
-        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(100))
-        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(103))
-        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(514))
-        self.assertEqual(main.ORDERS_HUNDREDS, main.get_order(999))
-
-        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(1000))
-        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(1030))
-        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(5140))
-        self.assertEqual(main.ORDERS_THOUSANDS, main.get_order(9999))
-
-        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(1_000_000))
-        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(1_030_000))
-        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(5_140_000))
-        self.assertEqual(main.ORDERS_MILLIONS, main.get_order(9_999_000))
-
-        self.assertEqual(
-            main.ORDERS_TRILLIONS,
-            main.get_order(13_592_510_000_002)
-        )
+    def assertOrderForNumbers(self, order, numbers):
+        for number in numbers:
+            self.assertEqual(order, main.get_order(number))
