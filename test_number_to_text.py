@@ -173,6 +173,12 @@ class NumberToTextTest(TestCase):
                                  "milioane nouă sute cincizeci şi unu mii o sută"
         })
 
+    def test_too_big(self):
+        self.assert_translations({
+            9_123_612_120_951_100: "nouă mii o sută douăzeci şi trei trilioane şase sute douăsprezece miliarde o sută douăzeci "
+                                 "milioane nouă sute cincizeci şi unu mii o sută"
+        })
+
     def assert_translations(self, assertions):
         for (digit, string) in assertions.items():
             self.assertEqual(string, main.number_to_text(digit))

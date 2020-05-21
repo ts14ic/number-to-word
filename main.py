@@ -1,3 +1,5 @@
+from typing import Dict
+
 _ZERO_TO_TWENTY = {
     0: "zero",
     1: "unu",
@@ -34,12 +36,12 @@ _TENS = {
 }
 
 _ORDERS = [
-    (0, "unu", "doi", ""),
-    (100, "o sută", "două sute", "sute"),
-    (1_000, "o mie", "două mii", "mii"),
-    (1_000_000, "un milion", "două milioane", "milioane"),
-    (1_000_000_000, "un miliard", "două miliarde", "miliarde"),
-    (1_000_000_000_000, "un trilion", "două trilioane", "trilioane")
+    dict(lowest=0, one="unu", two="doi", many=""),
+    dict(lowest=100, one="o sută", two="două sute", many="sute"),
+    dict(lowest=1_000, one="o mie", two="două mii", many="mii"),
+    dict(lowest=1_000_000, one="un milion", two="două milioane", many="milioane"),
+    dict(lowest=1_000_000_000, one="un miliard", two="două miliarde", many="miliarde"),
+    dict(lowest=1_000_000_000_000, one="un trilion", two="două trilioane", many="trilioane")
 ]
 
 ORDERS_ONES = _ORDERS[0]
@@ -50,10 +52,10 @@ ORDERS_BILLIONS = _ORDERS[4]
 ORDERS_TRILLIONS = _ORDERS[5]
 
 
-def get_order(number: int) -> (int, str, str, str):
+def get_order(number: int) -> dict:
     for index, current in enumerate(_ORDERS[:-1]):
         next = _ORDERS[index + 1]
-        if current[0] <= number < next[0]:
+        if current['lowest'] <= number < next['lowest']:
             return current
     return _ORDERS[-1]
 
@@ -69,14 +71,14 @@ def number_to_text(number: int) -> str:
             return _TENS[tens]
     else:
         order = get_order(number)
-        head, rest = divmod(number, order[0])
+        head, rest = divmod(number, order['lowest'])
 
         if head == 1:
-            head = order[1]
+            head = order['one']
         elif head == 2:
-            head = order[2]
+            head = order['two']
         else:
-            head = number_to_text(head) + " " + order[3]
+            head = number_to_text(head) + " " + order['many']
 
         if rest != 0:
             return head + " " + number_to_text(rest)
